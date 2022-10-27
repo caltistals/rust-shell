@@ -1,7 +1,7 @@
-use crossterm::{cursor, queue, execute};
 use crossterm::event::{Event as TermEvent, KeyCode, KeyEvent, KeyModifiers};
 use crossterm::style::{Attribute, Print, SetAttribute};
 use crossterm::terminal::{self, disable_raw_mode, enable_raw_mode, Clear, ClearType};
+use crossterm::{cursor, execute, queue};
 use std::io::Write;
 use std::time::Duration;
 use tracing::debug;
@@ -117,19 +117,19 @@ impl SmashState {
 
         debug!("start");
         loop {
-          match crossterm::event::poll(Duration::from_millis(100)) {
-              Ok(true) => loop {
-                  if let Ok(TermEvent::Key(ev)) = crossterm::event::read() {
-                      self.handle_key_event(&ev)
-                  }
+            match crossterm::event::poll(Duration::from_millis(100)) {
+                Ok(true) => loop {
+                    if let Ok(TermEvent::Key(ev)) = crossterm::event::read() {
+                        self.handle_key_event(&ev)
+                    }
 
-                  match crossterm::event::poll(Duration::from_millis(0)) {
-                      Ok(true) => (),
-                      _ => break,
-                  }
-              },
-              _ => (),
-          }
-}
+                    match crossterm::event::poll(Duration::from_millis(0)) {
+                        Ok(true) => (),
+                        _ => break,
+                    }
+                },
+                _ => (),
+            }
+        }
     }
 }
